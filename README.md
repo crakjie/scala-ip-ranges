@@ -1,7 +1,7 @@
-#Scala IP Range is a light lib that allow to iterate over ips.
-- Scala IP Range don't use any dependency and don't pollute your dependencies.
+#Scala IP Range is a light lib that allows to iterate over ips.
+- Scala IP Range doesn't use any dependency and doesn't pollute your dependencies.
 
-#Exemple
+#Example
 Instanciate a new ip.
 ```scala
   import ipranges.v4._
@@ -14,7 +14,7 @@ Build a new range.
   myRange: v4.IPRange = IPRange(192.0.0.2, 192.0.0.3, 192.0.0.4, 192.0.0.5, 192.0.0.6, 192.0.0.7, 192.0.0.8, 192.0.0.9, 192.0.0.10, 192.0.0.11, 192.0.0.12, 192.0.0.13, 192.0.0.14)
 ```
 
-Iterate over this range is easy a one two tree.
+Iterate over this range is easy as one two tree.
 
 ```scala
   for(ip <- IP(192,0,0,1) to IP(192,0,0,255)) {
@@ -30,7 +30,7 @@ You can also change the steps
 
 
 #Generator
-The Gen object allow you to easily get random generated IP.
+The Gen object allows you to easily get random generated IP.
 
 ```scala
   Gen.randomIp()
