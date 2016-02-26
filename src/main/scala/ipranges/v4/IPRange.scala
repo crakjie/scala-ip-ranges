@@ -14,7 +14,7 @@ class IPIterator(start: IP, end : IP, step : Int) extends Iterator[IP] {
   }
 
   def hasNext() : Boolean = {
-    if (last == end)
+    if (last.value >= end.value)
       false
     else
       true
@@ -24,8 +24,6 @@ class IPIterator(start: IP, end : IP, step : Int) extends Iterator[IP] {
 
 
 class IPRange(start: IP, end : IP, step : Int = 1) extends scala.collection.immutable.Iterable[IP] {
-  if((end.value - start.value) % step != 0)
-    throw new IllegalArgumentException("You just created an infinit iterable.")
 
   override def iterator: Iterator[IP] = new IPIterator(start, end, step)
 
