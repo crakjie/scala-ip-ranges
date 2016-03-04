@@ -2,6 +2,9 @@ package ipranges.v4
 
 import java.net.InetAddress
 
+import ipranges.IPRange
+import ipranges.Incrementable._
+
 /**
   * Created by Crakjie on 15/02/2016.
   *
@@ -67,18 +70,24 @@ case class IP (value : Int) extends AnyVal {
   @inline
   def ++ = incrementBy(1)
 
+
   /**
     * Build a IPRange that go from current IP to the given IP.
     * @param end
     * @return
     */
-  def to(end : IP) : IPRange = new IPRange(this, end)
+  def to(end : IP) : IPRange[IP] = new IPRange[IP](this, end)
 
   def inetAdress: InetAddress = InetAddress.getByName(toString)
 
+  def /(subnestMask : Int) : IPRange[IP] = {
+    val bitMask = -1 << (32-subnestMask)
+    new IP(this.value & bitMask) to new IP(this.value | ~bitMask)
+  }
+
 }
 
-object IP{
+object IP {
   def apply(
              a : Int,
              b : Int,
@@ -86,4 +95,14 @@ object IP{
              d : Int) :IP = {
     IP(a << 24 | b << 16 | c << 8 | d)
   }
+
+  implicit val IncrementableIP : Incrementable[IP] = new Incrementable[IP] {
+    @inline
+    final override def >=(self: IP)(other: IP): Boolean = (self.value & 0xffffffffL) >= (other.value & 0xffffffffL)
+
+    @inline
+    final override def incrementBy(self: IP)(n: Int): IP = self.incrementBy(n)
+  }
+
+
 }
