@@ -80,8 +80,8 @@ case class IP (value : Int) extends AnyVal {
 
   def inetAdress: InetAddress = InetAddress.getByName(toString)
 
-  def /(subnestMask : Int) : IPRange[IP] = {
-    val bitMask = -1 << (32-subnestMask)
+  def /(subnetMask : Int) : IPRange[IP] = {
+    val bitMask = -1 << (32-subnetMask)
     new IP(this.value & bitMask) to new IP(this.value | ~bitMask)
   }
 
