@@ -3,7 +3,6 @@ package ipranges.v4
 import java.net.InetAddress
 
 import ipranges.IPRange
-import ipranges.Incrementable._
 
 /**
   * Created by Crakjie on 15/02/2016.
@@ -96,12 +95,32 @@ object IP {
     IP(a << 24 | b << 16 | c << 8 | d)
   }
 
-  implicit val IncrementableIP : Incrementable[IP] = new Incrementable[IP] {
-    @inline
-    final override def >=(self: IP)(other: IP): Boolean = (self.value & 0xffffffffL) >= (other.value & 0xffffffffL)
 
-    @inline
-    final override def incrementBy(self: IP)(n: Int): IP = self.incrementBy(n)
+  implicit val ItegralIp : Integral[IP] = new Integral[IP] {
+
+    @inline def quot(x: IP, y: IP): IP = new IP(((x.value & 0xffffffffL) / (y.value & 0xffffffffL)).toInt)
+
+    @inline def rem(x: IP, y: IP): IP = new IP(((x.value & 0xffffffffL) % (y.value & 0xffffffffL)).toInt)
+
+    @inline def toDouble(x: IP): Double = x.value.toDouble
+
+    @inline def plus(x: IP, y: IP): IP = new IP(x.value + y.value)
+
+    @inline def toFloat(x: IP): Float = x.value.toFloat
+
+    @inline def toInt(x: IP): Int = x.value
+
+    @inline def negate(x: IP): IP = new IP(x.value)
+
+    @inline def fromInt(x: Int): IP = new IP(x)
+
+    @inline def toLong(x: IP): Long = x.value.toLong
+
+    @inline def times(x: IP, y: IP): IP = new IP(x.value * y.value)
+
+    @inline def minus(x: IP, y: IP): IP = new IP(x.value - y.value)
+
+    @inline def compare(x: IP, y: IP): Int = (x.value & 0xffffffffL).compare(y.value & 0xffffffffL)
   }
 
 

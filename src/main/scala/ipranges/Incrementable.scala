@@ -1,29 +1,30 @@
 package ipranges
 
 /**
-  * Created by admin on 03/03/2016.
+  * Created by crakjie on 03/03/2016.
   */
 
-
-
-object Incrementable {
-  trait Incrementable[T] extends Any {
-    @inline def >=(self : T)(other : T) : Boolean
-
-    @inline def incrementBy(self : T)(n :Int) : T
-  }
-
+object Integral {
   /**
-    * Use to transforme Incrementable[T] functions into "methods"
+    *Convert Int to Integral
     */
-  final class IncrementableOps[T](val self : T) extends AnyVal {
-    def >=(other : T)(implicit  Incrementable : Incrementable[T]) : Boolean = Incrementable.>=(self)(other)
-    def incrementBy(n : Int)(implicit  Incrementable : Incrementable[T]) : T = Incrementable.incrementBy(self)(n)
-  }
+  private[ipranges] implicit def toIntegral[T](self :Int)(implicit  Integral : Integral[T]) : T = Integral.fromInt(self)
+
   /**
-    * Use because if IncrementOpt is implicit every things can be a IncrementOps but not every things can call this methods
+    * Use to transforme Integral[T] functions into "methods"
+    */
+  final class IntegralOps[T](val self : T) extends AnyVal {
+    def >=(other : T)(implicit  Integral : Integral[T]) : Boolean = Integral.compare(self,other) >= 0
+    def >(other : T)(implicit  Integral : Integral[T]) : Boolean = Integral.compare(self,other) > 0
+    def <(other : T)(implicit  Integral : Integral[T]) : Boolean = Integral.compare(self,other) < 0
+    def <=(other : T)(implicit  Integral : Integral[T]) : Boolean = Integral.compare(self,other) <= 0
+  }
+
+  /**
+    * Use because if IntegralOpt is implicit every things can be a IntegralOps but not every things can call this methods
     * cause of implicit.
-    * Here to have IncrementOpt you need to bring your Incrementable[T]
+    * Here to have IncrementOpt you need to bring your Incrementable[T] that prove you can call methods
     */
-  implicit def toIncrementOps[T](self :T)(implicit  Incrementable : Incrementable[T]) : IncrementableOps[T] = new IncrementableOps( self )
+  implicit def toIntegralOps[T](self :T)(implicit  Integral : Integral[T]) : IntegralOps[T] = new IntegralOps( self )
+
 }
