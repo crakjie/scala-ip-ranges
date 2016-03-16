@@ -87,6 +87,15 @@ case class IP (value : Int) extends AnyVal {
 }
 
 object IP {
+
+  val ipRegex = """([0-9]*).([0-9]*).([0-9]*).([0-9]*)""".r
+
+  def apply(ipStr: String): IP = {
+    ipStr match {
+      case ipRegex(a,b,c,d) => IP(a.toInt, b.toInt, c.toInt, d.toInt)
+    }
+  }
+
   def apply(
              a : Int,
              b : Int,
@@ -94,7 +103,6 @@ object IP {
              d : Int) :IP = {
     IP(a << 24 | b << 16 | c << 8 | d)
   }
-
 
   implicit val ItegralIp : Integral[IP] = new Integral[IP] {
 
@@ -122,6 +130,5 @@ object IP {
 
     @inline def compare(x: IP, y: IP): Int = (x.value & 0xffffffffL).compare(y.value & 0xffffffffL)
   }
-
 
 }
