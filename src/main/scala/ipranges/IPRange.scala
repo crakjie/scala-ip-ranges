@@ -22,7 +22,7 @@ class IPIterator[T: Integral](val start: T, val end : T, step : Int) extends Ite
   }
 
   @inline
-  def hasNext() : Boolean = current < last
+  def hasNext() : Boolean = current != last
 
 }
 
