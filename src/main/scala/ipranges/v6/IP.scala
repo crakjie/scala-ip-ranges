@@ -106,6 +106,11 @@ final case class IP (val value : BigInt) extends AnyVal {
 
   def inetAdress: InetAddress = InetAddress.getByName(toString)
 
+  def /(subnetMask : Int) : IPRange[IP] = {
+    val bitMask : BigInt = BigInt(-1) << (128-subnetMask)
+    new IP(this.value & bitMask) to new IP(this.value | ~bitMask)
+  }
+
 }
 
 object IP{
@@ -152,4 +157,33 @@ object IP{
 
 }
 
+
+case class PartialIP1(a : Int) {
+  def :: (b : Int) : PartialIP2 = PartialIP2(a,b)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,0,0,0,0,0,0,0) / subnetMask
+}
+case class PartialIP2(a: Int, b : Int) {
+  def :: (c : Int) : PartialIP3 =PartialIP3(a,b,c)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,0,0,0,0,0,0) / subnetMask
+}
+case class PartialIP3(a: Int, b : Int, c :Int) {
+  def :: (d : Int) : PartialIP4 = PartialIP4(a,b,c,d)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,c,0,0,0,0,0) / subnetMask
+}
+case class PartialIP4(a: Int, b : Int, c :Int, d : Int) {
+  def :: (e : Int) : PartialIP5 = PartialIP5(a,b,c,d,e)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,c,d,0,0,0,0) / subnetMask
+}
+case class PartialIP5(a: Int, b : Int, c :Int, d : Int, e :Int) {
+  def :: (f : Int) : PartialIP6 = PartialIP6(a,b,c,d,e,f)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,c,d,e,0,0,0) / subnetMask
+}
+case class PartialIP6(a: Int, b : Int, c :Int, d : Int, e :Int, f :Int) {
+  def :: (g : Int) : PartialIP7 = PartialIP7(a,b,c,d,e,f,g)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,c,d,e,f,0,0) / subnetMask
+}
+case class PartialIP7(a: Int, b : Int, c :Int, d : Int, e :Int, f :Int, g : Int) {
+  def :: (h : Int) : IP = IP(a,b,c,d,e,f,g,h)
+  def ::/ (subnetMask : Int) : IPRange[IP] = IP(a,b,c,d,e,f,g,0) / subnetMask
+}
 

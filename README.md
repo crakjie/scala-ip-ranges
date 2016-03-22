@@ -40,9 +40,24 @@ range.last  //print IP(10,9,255,255)
 
 ```scala
   import ipranges._
-  val myIpv6 = v6.IP(192,0,0,2)
+  val myIpv6 = v6.IP(0x0, 0x0, 0xff00, 0x2442, 0x00af, 0xffff, 0xffff, 0xff42)
 ```
 
+Syntaxic sugar, ip v6 can be express in natural way.
+
+```scala
+  import ipranges.v6._
+  val myIpv6 = 0xffff::0xffff::0xffff::0xffff::0xffff::0xffff::0xffff::0xffff
+```
+
+It's also possible to express range with short cut.
+
+```scala
+  import ipranges.v6._
+  //ipv6 private network.
+  val ULA = 0xFD00::/7
+  ULA ipranges.IPRange[ipranges.v6.IP] = fc00:0:0:0:0:0:0:0 to fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff by 1
+```
 
 
 #Generator

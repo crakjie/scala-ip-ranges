@@ -41,6 +41,8 @@ class IPRange[T: Integral](start: T, end : T, step : Int = 1) extends scala.coll
 
   override def last = end - ( end - start ) % step
 
+  override def toString = s"$start to $end by $step"
+
 }
 
 
